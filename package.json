@@ -5,7 +5,8 @@
   "main": "js-macaroon.js",
   "scripts": {
     "test": "node test/test.js | tap-diff",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "dist": "browserify --no-builtins -r ./js-macaroon.js:js-macaroon -o ./dist/js-macaroon.js; babel ./dist/js-macaroon.js --no-comments -o ./dist/js-macaroon-min.js"
   },
   "author": "Jeff Pihach (https://fromanegg.com)",
   "contributors": [
@@ -18,6 +19,9 @@
   ],
   "license": "BSD-3-Clause",
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-babili": "0.0.12",
+    "browserify": "^14.3.0",
     "eslint": "^3.19.0",
     "tap-diff": "^0.1.1",
     "tape": "^4.6.3"
