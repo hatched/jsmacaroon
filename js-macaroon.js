@@ -2,7 +2,6 @@
 
 const sjcl = require('sjcl');
 const nacl = require('tweetnacl');
-nacl.util = require('tweetnacl-util');
 
 const NONCELEN = 24;
 
@@ -33,7 +32,7 @@ function requireUint8Array(val, msg) {
   @param {Uint8Array} arr The array to convert.
 */
 function uint8ArrayToBitArray(arr) {
-  return sjcl.codec.base64.toBits(nacl.util.encodeBase64(arr));
+  return sjcl.codec.hex.toBits(Uint8ArrayToHex(arr));
 }
 
 /**
@@ -41,7 +40,7 @@ function uint8ArrayToBitArray(arr) {
   @param {bitArray} arr The array to convert.
 */
 function bitArrayToUint8Array(arr) {
-  return nacl.util.decodeBase64(sjcl.codec.base64.fromBits(arr));
+  return hexToUint8Array(sjcl.codec.hex.fromBits(arr));
 }
 
 /**
@@ -55,6 +54,17 @@ function hexToUint8Array(hex) {
     arr[i] = parseInt(hex.substr(i * 2, 2), 16);
   }
   return arr;
+}
+
+function Uint8ArrayToHex(ua) {
+  if (!(ua instanceof Uint8Array)) {
+    throw new Error('invalid Uint8Array:' + ua);
+  }
+  let hex = '';
+  for (var i = 0; i < ua.length; i++) {
+    hex += (ua[i] < 16 ? '0' : '') + ua[i].toString(16);
+  }
+  return hex;
 }
 
 /**
